@@ -1,15 +1,23 @@
 from sklearn.model_selection import KFold
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import median_absolute_error
+
 import numpy as np
 import pandas as pd
+
+import math
 
 
 class StackModel:
 	"""
 	This class is only applicable for regression tasks for now.
 	"""
-	def __init__(self, estimators, meta_model, n_folds=5):
+	def __init__(self, estimators, meta_model, n_folds=5, score='RMSE'):
+		"""
+		score can be MSE, RMSE, MAE or R2
+		"""
 		if n_folds < 1:
 			raise BaseException('Number of folds must be at least 1')
 			return
@@ -20,6 +28,7 @@ class StackModel:
 		self.meta_model = meta_model
 		
 		self.estimators_score = {}
+		self.score = score
 
 		self.X_train = None
 		self.y_train = None
@@ -109,3 +118,17 @@ class StackModel:
 		
 		# stack features = predictions of estimators
 		return np.stack(mp, axis=1)
+
+	def __calculate_score(y_true, y_pred):
+		if self.score == 'MSE' or self.score == 'RMSE':
+			mse = mean_squared_error(y_true, y_pred)
+			if self.score == 'MSE':
+				return mse
+			else:
+				return math.sqrt(mse)
+		elif self.score == 'MAE':
+			return median_absolute_error(y_true, y_pred)
+		elif self.score == 'R2':
+			return r2_score(y_true, y_pred)
+		else:
+			return 'WRONG SCORE TYPE'
