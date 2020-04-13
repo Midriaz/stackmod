@@ -114,12 +114,12 @@ class StackModel:
 			mp.append(p)
 			# save the estimator score
 			if y_test is not None:
-				self.estimators_score[type(m).__name__] = r2_score(y_test, p)
+				self.estimators_score[type(m).__name__] = self.__calculate_score(y_test, p)
 		
 		# stack features = predictions of estimators
 		return np.stack(mp, axis=1)
 
-	def __calculate_score(y_true, y_pred):
+	def __calculate_score(self, y_true, y_pred):
 		if self.score == 'MSE' or self.score == 'RMSE':
 			mse = mean_squared_error(y_true, y_pred)
 			if self.score == 'MSE':

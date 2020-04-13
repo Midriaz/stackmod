@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="stackmod",
-    version="0.0.1",
+    version="0.0.5",
     author="Midriaz",
     author_email="scome@inbox.ru",
     description="Stacking for machine learning",

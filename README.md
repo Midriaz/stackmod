@@ -5,3 +5,6 @@ Stacking for machine learning
 * Sklearn
 * Numpy
 * Pandas
+
+## Installation 
+`pip install stackmod`
